@@ -34,4 +34,11 @@ public class PlayerScript : MonoBehaviour
             transform.position= new Vector3(-screenHalfWidth,transform.position.y,0);
         }
     }
+
+    //override
+    void OnTriggerEnter2D(Collider2D trigger){
+        if(trigger.tag== "Faller"){
+            Destroy(gameObject);
+        }
+    }
 }

@@ -5,6 +5,16 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject fallerPrefab;
+
+    //LEVEL PROPERTIES
+    public float blockPerLevel= 5f;
+    public float levelIntensity= 2f;
+
+    int count= 0;
+
+    float fallerSpeed= 5;
+
+    //SPAWN PROPERTIES
     Vector2 screenHalfSize;
 
     public float spawnRate= 2;
@@ -12,15 +22,20 @@ public class Spawner : MonoBehaviour
 
     public Vector2 spawnSizeMinMax;
 
+    
+
     void Start()
     {
         nextSpawnTime= Time.time;
+
         screenHalfSize= new Vector2(Camera.main.aspect* Camera.main.orthographicSize, Camera.main.orthographicSize);
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+
         if(Time.time>= nextSpawnTime){
             nextSpawnTime += spawnRate;
 
@@ -28,8 +43,21 @@ public class Spawner : MonoBehaviour
 
             Quaternion fallerRotation= Quaternion.Euler(0,0,Random.Range(-15f,15f));
 
-            GameObject faller= Instantiate(fallerPrefab,spawnPosition,fallerRotation);
+            GameObject faller= (GameObject)Instantiate(fallerPrefab,spawnPosition,fallerRotation);
             faller.transform.localScale= new Vector3(Random.Range(0.5f,1.5f),Random.Range(spawnSizeMinMax.x, spawnSizeMinMax.y),1);
+            faller.GetComponent<FallerScript>().speed= fallerSpeed;
+            
+            count++;
+        }
+
+        if(count>= blockPerLevel){
+            if(spawnRate> 0.2){
+                spawnRate /= levelIntensity;
+            
+            }
+            fallerSpeed += 1;
+            
+            count= 0;
         }
     }
 }
