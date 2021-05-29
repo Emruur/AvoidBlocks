@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
     public int speed= 1;
+    public event System.Action OnPlayerDeath;
 
     float screenHalfWidth;
 
@@ -38,6 +39,9 @@ public class PlayerScript : MonoBehaviour
     //override
     void OnTriggerEnter2D(Collider2D trigger){
         if(trigger.tag== "Faller"){
+            if(OnPlayerDeath!=null){
+                OnPlayerDeath();
+            }
             Destroy(gameObject);
         }
     }

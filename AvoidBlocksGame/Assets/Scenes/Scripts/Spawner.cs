@@ -43,7 +43,7 @@ public class Spawner : MonoBehaviour
             GameObject faller= (GameObject)Instantiate(fallerPrefab,spawnPosition,fallerRotation);
             faller.transform.localScale= new Vector3(Random.Range(0.5f,1.5f),Random.Range(spawnSizeMinMax.x, spawnSizeMinMax.y),1);
             Difficulty.incrementDifficulty();
-            print(Difficulty.getCurrentPercentage());
+            
             
             
         }

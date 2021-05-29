@@ -9,14 +9,23 @@ public static class Difficulty
     public static int currentDifficulty= 0;
 
     public static float getCurrentPercentage(){
+        if(currentDifficulty>= maxDifficulty){
+            return 1;
+        }
 
         return (float)currentDifficulty/maxDifficulty;
     }
 
     public static void incrementDifficulty(){
-        if(currentDifficulty < maxDifficulty){
            currentDifficulty++; 
-        }
-        
+         
+    }
+
+    public static int getScore(){
+        return currentDifficulty;
+    }
+
+    public static  void resetDifficulty(){
+        currentDifficulty= 0;
     }
 }
