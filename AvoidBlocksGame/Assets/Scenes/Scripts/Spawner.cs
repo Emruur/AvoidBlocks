@@ -10,14 +10,11 @@ public class Spawner : MonoBehaviour
     public float blockPerLevel= 5f;
     public float levelIntensity= 2f;
 
-    int count= 0;
-
-    float fallerSpeed= 5;
 
     //SPAWN PROPERTIES
     Vector2 screenHalfSize;
 
-    public float spawnRate= 2;
+    public Vector2 spawnIntervalMinMax;
     float nextSpawnTime;
 
     public Vector2 spawnSizeMinMax;
@@ -27,6 +24,7 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         nextSpawnTime= Time.time;
+        
 
         screenHalfSize= new Vector2(Camera.main.aspect* Camera.main.orthographicSize, Camera.main.orthographicSize);
     }
@@ -37,27 +35,19 @@ public class Spawner : MonoBehaviour
         
 
         if(Time.time>= nextSpawnTime){
-            nextSpawnTime += spawnRate;
+            nextSpawnTime += Mathf.Lerp(spawnIntervalMinMax.y, spawnIntervalMinMax.x, Difficulty.getCurrentPercentage());
 
             Vector2 spawnPosition= new Vector2(Random.Range(-screenHalfSize.x,screenHalfSize.x),screenHalfSize.y+ spawnSizeMinMax.y);
-
             Quaternion fallerRotation= Quaternion.Euler(0,0,Random.Range(-15f,15f));
 
             GameObject faller= (GameObject)Instantiate(fallerPrefab,spawnPosition,fallerRotation);
             faller.transform.localScale= new Vector3(Random.Range(0.5f,1.5f),Random.Range(spawnSizeMinMax.x, spawnSizeMinMax.y),1);
-            faller.GetComponent<FallerScript>().speed= fallerSpeed;
+            Difficulty.incrementDifficulty();
+            print(Difficulty.getCurrentPercentage());
             
-            count++;
+            
         }
 
-        if(count>= blockPerLevel){
-            if(spawnRate> 0.2){
-                spawnRate /= levelIntensity;
-            
-            }
-            fallerSpeed += 1;
-            
-            count= 0;
-        }
+        
     }
 }
